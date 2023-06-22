@@ -51,10 +51,14 @@
 .section .text
 
 test_start:
-    # Testing region 1 access (enabled)  -> ok in u mode
+    # Note: with TOR, the matching of address y checks that
+    # pmpaddr(i-1) <= y < pmpaddr(i)
+    # Testing region 1 access       -> ok in u mode
     ld a0, 8(s2)
-    # Testing region 2 access (disabled) -> ko in u mode
-    ld a0, 8(s3)
+    # Testing region 1 lower bound  -> ok in u mode
+    ld a0, 0(s2)
+    # Testing region 2 lower bound  -> ko in u mode
+    ld a0, 0(s3)
     ret
 
 pmp_setup:
