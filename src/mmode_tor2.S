@@ -1,10 +1,31 @@
+# This test uses three memory regions in TOR, one with full rights,
+# containing the .text section, one with read-only for data and another
+# data region with no rights. We try to access both data regions
+# in M-mode (they should all work):
+#
+# ___________ Region 0 (RWX) _____________
+#
+#           Code (.text section)
+# ________________________________________ < TOR (beginning address data region 0)
+# ___________ Region 1 (R__) _____________
+#
+#             Data region 0
+# ________________________________________ < TOR (end address data region 0)
+# ___________ Region 2 (___) _____________
+#
+#             Data region 1
+# ________________________________________ < TOR (end address data region 1)
+
+
 # PMP address registers contains:
 #  63   54 53              0
 # |   0   |    addr[55:2]   |
 
-.equiv PMP_ADDR0, 0x80000800
+.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0
 
-.equiv PMP_ADDR1, 0x80001000
+.equiv PMP_ADDR1, 0x80002e00  # Should be equal to top range of data_region0
+
+.equiv PMP_ADDR2, 0x80002f00  # Should be equal to top range of data_region1
 
 # PMP config registers contains 4 8-bit configs that consist of:
 #   7  6  5 4   3  2   1   0
@@ -15,9 +36,10 @@
 
 # Config for this test:
 # region0: locked TOR all rights  -> 0b10001111/0x8F
-# region1: locked TOR no rights   -> 0b10001000/0x88
+# region1: locked TOR RO          -> 0b10001001/0x89
+# region2: locked TOR no rights   -> 0b10001000/0x88
 
-.equiv PMP_CONFIG, 0x0000888F
+.equiv PMP_CONFIG, 0x0088898F
 
 .global main
 
