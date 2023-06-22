@@ -21,7 +21,7 @@
 #  63   54 53              0
 # |   0   |    addr[55:2]   |
 
-.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0
+.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0 (top range of code)
 
 .equiv PMP_ADDR1, 0x80002e00  # Should be equal to top range of data_region0
 

@@ -26,7 +26,7 @@
 #  63   54 53              0
 # |   0   |    addr[55:2]   |
 
-.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0
+.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0 (top range of code)
 
 .equiv PMP_ADDR1, 0x80002e00  # Should be equal to top range of data_region0
 
@@ -41,8 +41,8 @@
 
 # Config for this test:
 # region0: locked TOR all rights  -> 0b10001111/0x8F
-# region1: locked NAPOT RO        -> 0b10011001/0x99
-# region2: locked NAPOT no rights -> 0b10011000/0x98
+# region1: locked TOR RO          -> 0b10001001/0x89
+# region2: locked TOR no rights   -> 0b10001000/0x88
 
 .equiv PMP_CONFIG, 0x0088898F
 
