@@ -63,6 +63,11 @@ pmp_setup:
     srli t0, t0, 2    # Note: addr should be shifted by 2
     csrw pmpaddr1, t0
 
+    # Setup third PMP region
+    li t0, PMP_ADDR2
+    srli t0, t0, 2    # Note: addr should be shifted by 2
+    csrw pmpaddr2, t0
+
     # Setup PMP config 
     li t0, PMP_CONFIG
     csrw pmpcfg0, 0

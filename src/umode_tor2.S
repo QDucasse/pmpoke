@@ -37,12 +37,12 @@
 # | L | 00 |  A  | X | W | R
 # with: 
 # L (lock), X (execute), W (write), R (read) 
-# A matching mode (0-OFF, 1-TOR, 2-NA4, 3-NAPOT)
+# A matching mode (0b00-OFF, 0b01-TOR, 0b10-NA4, 0b11-NAPOT)
 
 # Config for this test:
 # region0: locked TOR all rights  -> 0b10001111/0x8F
-# region1: locked TOR RO          -> 0b10001001/0x89
-# region2: locked TOR no rights   -> 0b10001000/0x88
+# region1: locked NAPOT RO        -> 0b10011001/0x99
+# region2: locked NAPOT no rights -> 0b10011000/0x98
 
 .equiv PMP_CONFIG, 0x0088898F
 
@@ -80,6 +80,11 @@ pmp_setup:
     li t0, PMP_ADDR1
     srli t0, t0, 2    # Note: addr should be shifted by 2
     csrw pmpaddr1, t0
+
+    # Setup third PMP region
+    li t0, PMP_ADDR2
+    srli t0, t0, 2    # Note: addr should be shifted by 2
+    csrw pmpaddr2, t0
 
     # Setup PMP config 
     li t0, PMP_CONFIG
