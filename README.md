@@ -33,8 +33,8 @@ make bin/mmode_tor2.rocket
 ### Test memory layout
 
 The tests workflow is the following:
-    - `main`: that stores the `data_region0` address in `s2` and `data_region1` in `s3`
-    - `pmp_setup`: that fills the `pmpaddri` and `pmpcfgi` registers in M-mode
-    - `test_start`: that tries to access memory (either in U-mode or M-mode)
+- `main`: that stores the `data_region0` address in `s2` and `data_region1` in `s3`
+- `pmp_setup`: that fills the `pmpaddri` and `pmpcfgi` registers in M-mode
+- `test_start`: that tries to access memory (either in U-mode or M-mode)
 
 The different `data_regioni` contain the same `data.bin`, a 256-word iteration (0x00000000, 0x00000001, ...). They are `0x100` aligned and usually end up at `0x80000d00`, `0x0x80000e00`, etc. (this can be checked in the dumps!)
