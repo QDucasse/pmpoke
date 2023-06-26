@@ -1,3 +1,5 @@
+# Derived from mmode.S
+
 # This test uses three memory regions in TOR, one with full rights,
 # containing the .text section, one with read-only for data and another
 # data region with no rights. We try to access both data regions
@@ -7,14 +9,14 @@
 #
 #           Code (.text section)
 # ________________________________________ < TOR (beginning address data region 0)
-# ___________ Region 1 (R__) _____________
+# ___________ Region 1 (R__) _____________ < NAPOT (first 32 bytes of data region 1)
 #
 #             Data region 0
-# ________________________________________ < TOR (end address data region 0)
-# ___________ Region 2 (___) _____________
+# ________________________________________ 
+# ___________ Region 2 (___) _____________ < NAPOT (first 32 bytes of data region 1)
 #
 #             Data region 1
-# ________________________________________ < TOR (end address data region 1)
+# ________________________________________
 
 
 # PMP address registers contains:

@@ -1,34 +1,20 @@
 # Derived from umode.S
 
-# This test uses three memory regions in TOR, one with full rights,
-# containing the .text section, one with read-only for data and another
-# data region with no rights. We try to access both data regions
-# in U-mode (the first access should work and the second should not):
-# 
-# ___________ Region 0 (RWX) _____________
-#
-#           Code (.text section)
-# ________________________________________ < TOR (beginning address data region 0)
-# ___________ Region 1 (R__) _____________
-#
-#             Data region 0
-# ________________________________________ < TOR (end address data region 0)
-# ___________ Region 2 (___) _____________
-#
-#             Data region 1
-# ________________________________________ < TOR (end address data region 1)
-
-
-
-# Note: The 0 bits correspond to the MPP field, responsible 
-# of the mode selection (0b00 for U, 0b01 for S and 0b11 for M)
-.equiv MASK_MPP_USER_MODE, 0xFFFFE7FF
+# The following template presents the base framework for a test with 
+# several pmp regions and using user mode. 
+#  - The PMP setup function is the ran just after the main function
+#    and fills the pmp CSRs (both addresses and configs).
+#  - The test start function performs the accesses that are tested.
+#  - The data regions both hold the same raw binary data.bin, an iterative
+#    concatenation of 256 32-bits integers (0x00000000, 0x00000001, etc.)
 
 # PMP address registers contains:
 #  63   54 53              0
 # |   0   |    addr[55:2]   |
 
-.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0 (top range of code)
+# Those addresses can be verified in the dump! Data bins have a length of 0x100
+
+.equiv PMP_ADDR0, 0x80002d00  # Should be equal to the beginning of data_region0
 
 .equiv PMP_ADDR1, 0x80002e00  # Should be equal to top range of data_region0
 
@@ -39,28 +25,35 @@
 # | L | 00 |  A  | X | W | R
 # with: 
 # L (lock), X (execute), W (write), R (read) 
-# A matching mode (0b00-OFF, 0b01-TOR, 0b10-NA4, 0b11-NAPOT)
+# A matching mode (0-OFF, 1-TOR, 2-NA4, 3-NAPOT)
 
 # Config for this test:
-# region0: locked TOR all rights  -> 0b10001111/0x8F
-# region1: locked TOR RO          -> 0b10001001/0x89
-# region2: locked TOR no rights   -> 0b10001000/0x88
+# region0: OFF all rights  -> 0b00001111/0x0F
+# region1: OFF all rights  -> 0b00001111/0x0F
+# region2: OFF all rights  -> 0b00001111/0x0F
+# (this test will fail)
+# Note: as stated in the spec - 
+#   "If at least one PMP entry is implemented, but all PMP entries’ A
+#    fields are set to OFF, then all S-mode and U-mode memory accesses 
+#    will fail."
 
-.equiv PMP_CONFIG, 0x0088898F
+.equiv PMP_CONFIG, 0x00070707
+
+# Note: The 0 bits correspond to the MPP field, responsible 
+# of the mode selection (0b00 for U, 0b01 for S and 0b11 for M)
+.equiv MASK_MPP_USER_MODE, 0xFFFFE7FF
 
 .global main
 
 .section .text
 
 test_start:
-    # Note: with TOR, the matching of address y checks that
-    # pmpaddr(i-1) <= y < pmpaddr(i)
-    # Testing region 1 access       -> ok in u mode
+    # Testing region 1 access
     ld a0, 8(s2)
-    # Testing region 1 lower bound  -> ok in u mode
-    ld a0, 0(s2)
-    # Testing region 2 lower bound  -> ko in u mode
-    ld a0, 0(s3)
+    sd a0, 8(s2)
+    # Testing region 2 access
+    ld a0, 8(s3)
+    sd a0, 8(s3)
     ret
 
 pmp_setup:
