@@ -68,14 +68,14 @@ bin/%.dump: $(bin_dir)/%.elf
 # Rocket execution
 bin/%.rocket: $(bin_dir)/%.elf
 	$(ROCKET_EMU)/emulator-freechips.rocketchip.system-freechips.rocketchip.system.$(ROCKET_CONFIG) \
-	+max-cycles=$(ROCKET_CYCLES) +verbose $< 3>&1 1>&2 2>&3 | \
+	+max-cycles=$(ROCKET_CYCLES) +verbose $< 2>&1| \
 	$(RISCV)/bin/spike-dasm > $@
 
 # Execution and waveform
 bin/%.vcd: $(bin_dir)/%.elf
 	$(ROCKET_EMU)/emulator-freechips.rocketchip.system-freechips.rocketchip.system.$(ROCKET_CONFIG)-debug \
-	+max-cycles=$(ROCKET_CYCLES) +verbose -v $@ $< > /dev/null 2>&1
-
+	+max-cycles=$(ROCKET_CYCLES) +verbose -v $@ $< 2>&1 | \
+	$(RISCV)/bin/spike-dasm > bin/out.rocket
 
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
