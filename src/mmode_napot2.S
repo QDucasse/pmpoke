@@ -77,7 +77,7 @@ pmp_setup:
 
     # Setup PMP config 
     li t0, PMP_CONFIG
-    csrw pmpcfg0, 0
+    csrw pmpcfg0, t0
 
     # Directly jump into the test start (no mode change) !
     j test_start
