@@ -76,10 +76,7 @@ bin/%.vcd: $(bin_dir)/%.elf
 	$(ROCKET_EMU)/emulator-freechips.rocketchip.system-freechips.rocketchip.system.$(ROCKET_CONFIG)-debug \
 	+max-cycles=$(ROCKET_CYCLES) +verbose -v $@ $< 2>&1 | \
 	$(RISCV)/bin/spike-dasm > bin/out.rocket
-
-# Execute GTKWave
-gtkwave:
-	gtkwave bin/$(file).vcd $(src_dir)/gtkwave_config/$(file).gtkw -r $(src_dir)/gtkwave_config/.gtkwaverc
+	gtkwave $@ -S $(src_dir)/gtkwave_config/config.tcl -r $(src_dir)/gtkwave_config/.gtkwaverc
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
 BINS=$(wildcard $(bin_dir)/*.bin)
