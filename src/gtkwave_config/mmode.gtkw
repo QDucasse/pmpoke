@@ -1,0 +1,72 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Wed Jun 28 13:20:04 2023
+[*]
+[dumpfile] "../../bin/mmode.vcd"
+[dumpfile_size] 2190255703
+[savefile] "mmode.gtkw"
+[timestart] 301040
+[size] 2560 1355
+[pos] -1 -1
+*-1.000000 301055 300921 300923 300995 300997 301005 301007 301009 301011 301013 301015 301017 301019 301021 301029 301031 301033 301035 301037 301039 301041 301049 301051 301053 301055 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.TestHarness.
+[treeopen] TOP.TestHarness.ldut.
+[treeopen] TOP.TestHarness.ldut.tile_prci_domain.
+[treeopen] TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.
+[treeopen] TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.
+[sst_width] 233
+[signals_width] 475
+[sst_expanded] 1
+[sst_vpaned_height] 407
+@200
+-Clock
+@28
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.clock
+@200
+-
+-Instruction and PC
+@22
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.inst[31:0]
+@23
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr.io_pc[39:0]
+@200
+-
+-t0 register
+@22
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.rf(26)[63:0]
+@200
+-
+-PMP 0
+@22
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_0_addr[29:0]
+@28
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_0_cfg_a[1:0]
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_0_cfg_l
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_0_cfg_r
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_0_cfg_w
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_0_cfg_x
+@200
+-
+-PMP 1
+@22
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_1_addr[29:0]
+@28
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_1_cfg_a[1:0]
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_1_cfg_l
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_1_cfg_r
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_1_cfg_w
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_1_cfg_x
+@200
+-
+-PMP 2
+@22
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_2_addr[29:0]
+@28
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_2_cfg_a[1:0]
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_2_cfg_l
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_2_cfg_r
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_2_cfg_w
+TOP.TestHarness.ldut.tile_prci_domain.tile_reset_domain_tile.core.csr_io_pmp_2_cfg_x
+[pattern_trace] 1
+[pattern_trace] 0
