@@ -79,7 +79,7 @@ bin/%.vcd: $(bin_dir)/%.elf
 
 # Execute GTKWave
 gtkwave:
-	gtkwave bin/$(file).vcd $(src_dir)/gtkwave_config/$(file).gtkw
+	gtkwave bin/$(file).vcd $(src_dir)/gtkwave_config/$(file).gtkw -r $(src_dir)/gtkwave_config/.gtkwaverc
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
 BINS=$(wildcard $(bin_dir)/*.bin)
