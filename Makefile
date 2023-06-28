@@ -77,6 +77,9 @@ bin/%.vcd: $(bin_dir)/%.elf
 	+max-cycles=$(ROCKET_CYCLES) +verbose -v $@ $< 2>&1 | \
 	$(RISCV)/bin/spike-dasm > bin/out.rocket
 
+# Execute GTKWave
+gtkwave:
+	gtkwave bin/$(file).vcd $(src_dir)/gtkwave_config/$(file).gtkw
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
 BINS=$(wildcard $(bin_dir)/*.bin)
