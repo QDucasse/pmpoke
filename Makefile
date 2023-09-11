@@ -1,11 +1,6 @@
 # Check for RISCV toolchain env variable
 ifndef RISCV
-$(error Please set environment variable RISCV to your installed toolchain location (i.e. /opt/riscv-rocket))
-endif
-
-# Check for ROCKET toolchain env variable
-ifndef ROCKET
-$(error Please set environment variable ROCKET to the rocket-chip repo (it is expected to have the emulator compiled))
+$(error Please set environment variable RISCV to your installed toolchain location (i.e. /opt/riscv-newlib))
 endif
 
 
@@ -23,10 +18,7 @@ RISCV_GCC_OPTS ?= -march=rv64g  -mabi=lp64d -DPREALLOCATE=1 -mcmodel=medany -sta
 RISCV_LINK_OPTS ?= -static -nostdlib -nostartfiles -lm -lgcc -T test.ld
 RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble --full-contents --disassemble-zeroes --section=.text --section=.text.startup --section=.text.init --section=.data
 
-# Rocket
-ROCKET_EMU ?= $(ROCKET)/emulator
-ROCKET_CYCLES ?= 100000000
-ROCKET_CONFIG ?= DefaultConfig
+MAX_CYCLES ?= 100000000
 
 # Define sources
 COMS_C=$(wildcard $(com_dir)/*.c) 
@@ -65,23 +57,27 @@ bin/%.elf: $(COMS_O) $(bin_dir)/%.o
 bin/%.dump: $(bin_dir)/%.elf
 	$(RISCV_OBJDUMP) $< > $@
 
-# Rocket execution
-bin/%.rocket: $(bin_dir)/%.elf
-	$(ROCKET_EMU)/emulator-freechips.rocketchip.system-freechips.rocketchip.system.$(ROCKET_CONFIG) \
-	+max-cycles=$(ROCKET_CYCLES) +verbose $< 2>&1| \
+# Check for EMULATOR toolchain env variable
+emudef: 
+ifndef EMULATOR
+	$(error Please set environment variable EMULATOR to the emulator (verilator) of your core)
+endif
+
+# Core execution
+bin/%.corelog: $(bin_dir)/%.elf emudef
+	$(EMULATOR) +max-cycles=$(MAX_CYCLES) +verbose $< 2>&1| \
 	$(RISCV)/bin/spike-dasm > $@
 
 # Execution and waveform
-bin/%.vcd: $(bin_dir)/%.elf
-	$(ROCKET_EMU)/emulator-freechips.rocketchip.system-freechips.rocketchip.system.$(ROCKET_CONFIG)-debug \
-	+max-cycles=$(ROCKET_CYCLES) +verbose -v $@ $< 2>&1 | \
-	$(RISCV)/bin/spike-dasm > bin/out.rocket
+bin/%.vcd: $(bin_dir)/%.elf emudef
+	$(EMULATOR) +max-cycles=$(MAX_CYCLES) +verbose -v $@ $< 2>&1 | \
+	$(RISCV)/bin/spike-dasm > bin/out.corelog
 	gtkwave $@ -S $(src_dir)/gtkwave_config/config.tcl -r $(src_dir)/gtkwave_config/.gtkwaverc
 
 DUMPS=$(wildcard $(bin_dir)/*.dump)
 BINS=$(wildcard $(bin_dir)/*.bin)
 ELFS=$(wildcard $(bin_dir)/*.elf)
-ROCKET_LOGS=$(wildcard $(bin_dir)/*.rocket)
+CORE_LOGS=$(wildcard $(bin_dir)/*.corelog)
 
 .PHONY: clean
 

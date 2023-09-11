@@ -1,26 +1,26 @@
 ## PMPoke: Testing the PMP
 
-Small ASM tests for the RISC-V Physical Memory Protection unit, using the Rocket CPU and its emulator.
+Small ASM tests for the RISC-V Physical Memory Protection unit, on top of a Verilator emulator.
 
 
 ### Installation
 
-To build and run the different tests, a RISC-V toolchain installation is needed as well as the [Rocket](https://github.com/chipsalliance/rocket-chip) verilator emulator:
+To build and run the different tests, a RISC-V toolchain installation is needed as well as a core Verilator emulator ([Rocket](https://github.com/chipsalliance/rocket-chip) or [CVA6](https://github.com/openhwgroup/cva6) for example):
 ```bash
 export RISCV=/path/to/the/toolchain
-export ROCKET=/path/to/rocket/repo
+export EMULATOR=/path/to/compiled/emulator
 ```
 
-You can then build the `elf`/`dump`/`rocket log` using:
+You can then build the `elf`/`dump`/`core log / vcd` using:
 
 ```bash
-make bin/<test_name>.elf|dump|rocket
+make bin/<test_name>.elf|dump|corelog|vcd
 ```
 
 For `mmode_tor2` for example:
 
 ```bash
-make bin/mmode_tor2.rocket
+make bin/mmode_tor2.corelog
 ```
 
 > Note: Intermediate files are deleted by make as the makefile does not explicitely state them..... I'd rather not expand the makefile and specify the needed intermediate file through make directly if needed, (*e.g.* `make bin/mmode_tor2.elf` to access the `elf` file, etc.). If you want to keep all intermediate files, I found that replacing `%` in the following snippets with the actual name will keep them (needs to be duplicated for each new test though 🥱)
